@@ -14,12 +14,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
-    private Texture background;
     private Texture title;
     private Texture table;
     private Texture score;
     
-    Animation<TextureRegion> animation;
+    Animation<TextureRegion> background;
     float elapsed;
 
     @Override
@@ -28,32 +27,49 @@ public class Main extends ApplicationAdapter {
         title = new Texture("tetrisTitle.png");
         table = new Texture("tabla.jpg");
         score = new Texture("score.png");
-        background = new Texture("background.jpg");
 
-        animation = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("test.gif").read());
+        background = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("background.gif").read());
      
        
     }
+    
+    @Override
+	public void resize(int width, int height) {
+		
+	}
 
     @Override
     public void render() {
-        // ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-    	 elapsed += Gdx.graphics.getDeltaTime();
-         Gdx.gl.glClearColor(1, 0, 0, 0);
-         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        batch.begin();
-        final int width = Gdx.graphics.getWidth();
-        final int height = Gdx.graphics.getHeight();
-        
-        batch.draw(animation.getKeyFrame(elapsed), 0, 0, width, height);
-        batch.draw(table, 40, 75, width - 240, height - 250);
-        batch.draw(title, 40, height - 160, width - 240, 150);
-        batch.draw(score, width - 180, height - 320, 150, 150);
-        
-        batch.end();
+    	input();
+    	logic();
+    	draw();
         
     }
+    
+    private void input() {
+    	
+    }
+    
+	private void logic() {
+		
+	}
+	
+	private void draw() {
+	   	elapsed += Gdx.graphics.getDeltaTime();
+	    Gdx.gl.glClearColor(1, 0, 0, 0);
+	    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+	
+	    batch.begin();
+	    final int width = Gdx.graphics.getWidth();
+	    final int height = Gdx.graphics.getHeight();
+	    
+	    batch.draw(background.getKeyFrame(elapsed), 0, 0, width, height);
+	    batch.draw(table, 40, 75, width - 240, height - 250);
+	    batch.draw(title, 40, height - 160, width - 240, 150);
+	    batch.draw(score, width - 180, height - 320, 150, 150);
+	    
+	    batch.end();
+	}
 
     @Override
     public void dispose() {
@@ -61,6 +77,8 @@ public class Main extends ApplicationAdapter {
         title.dispose();
         table.dispose();
         score.dispose();
-        background.dispose();
+        for (Object frame : background.getKeyFrames()) {
+            ((TextureRegion) frame).getTexture().dispose();
+        }
     }
 }
