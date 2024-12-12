@@ -19,7 +19,8 @@ public class Main extends ApplicationAdapter {
     private Texture table;
     private Texture score;
     
-   
+    Animation<TextureRegion> animation;
+    float elapsed;
 
     @Override
     public void create() {
@@ -29,21 +30,24 @@ public class Main extends ApplicationAdapter {
         score = new Texture("score.png");
         background = new Texture("background.jpg");
 
-    
-
-
+        animation = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("test.gif").read());
+     
        
     }
 
     @Override
     public void render() {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        
+        // ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+    	 elapsed += Gdx.graphics.getDeltaTime();
+         Gdx.gl.glClearColor(1, 0, 0, 0);
+         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
         final int width = Gdx.graphics.getWidth();
         final int height = Gdx.graphics.getHeight();
-        batch.draw(background, 0, 0, width, height);
+        
+        batch.draw(animation.getKeyFrame(elapsed), 20.0f, 20.0f);
+        // batch.draw(background, 0, 0, width, height);
         batch.draw(table, 40, 75, width - 240, height - 250);
         batch.draw(title, 40, height - 160, width - 240, 150);
         batch.draw(score, width - 180, height - 320, 150, 150);
