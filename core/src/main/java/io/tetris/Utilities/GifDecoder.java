@@ -1,4 +1,4 @@
-package io.tetris;
+package io.tetris.Utilities;
 import java.io.InputStream;
 import java.util.Vector;
 
