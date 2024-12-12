@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.tetris.Utilities.GifDecoder;
+import io.tetris.Utilities.Methods;
 import io.tetris.Utilities.Textures;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -24,8 +26,14 @@ public class Main extends ApplicationAdapter {
     // Textures object for getting textures
     private Textures textures;
     
+    private Methods m = new Methods();
+    
     // Elapsed
     private float elapsed;
+    
+
+    private float inputDelay = 0.5f; // Delay in seconds
+	private float inputTimer = 0;
   
     
     @Override
@@ -34,6 +42,7 @@ public class Main extends ApplicationAdapter {
         batch = new SpriteBatch();
         // Create a new Textures object
         textures = new Textures();
+        textures.initialize();
 
         
     }
@@ -55,6 +64,17 @@ public class Main extends ApplicationAdapter {
     }
     
     private void input() {
+    	float delta = Gdx.graphics.getDeltaTime();
+        inputTimer += delta;
+    	
+        if (inputTimer >= inputDelay) {
+            if (Gdx.input.isKeyPressed(Keys.ENTER)) {
+                inputTimer = 0; // Reset the timer
+                int randomNumber = (int) (Math.random() * 99) + 1;
+                System.out.println("Random number: " + randomNumber);
+                m.sumScore(randomNumber,textures);
+            }
+        }
     	
     }
     
@@ -128,12 +148,15 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void dispose() {
-    	
     	// Dispose the batch and all the textures
         batch.dispose();
         textures.getTitle().dispose();
         textures.getTable().dispose();
         textures.getScoreBox().dispose();
+        textures.getLevelBox().dispose();
+        textures.getLinesBox().dispose();
+        
+        
         for (Object frame : textures.getBackground().getKeyFrames()) {
             ((TextureRegion) frame).getTexture().dispose();
         }

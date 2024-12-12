@@ -18,20 +18,27 @@ public class Textures {
     // Texture for the score box of the game
 	private Texture scoreBox;
     // Texture for the score of the game
+	private String scoreInts;
     private ArrayList<Texture> scoreTexture = new ArrayList<Texture>();
     // Texture for the level box of the game
     private Texture levelBox;
     // Texture for the level of the game
+    private String levelInts;
     private ArrayList<Texture> levelTexture = new ArrayList<Texture>();
     // Texture for the lines box of the game
     private Texture linesBox;
     // Texture for the lines of the game
+    private String linesInts;
     private ArrayList<Texture> linesTexture = new ArrayList<Texture>();
 	// Texture for the background of the game
 	private Animation<TextureRegion> background;
 	
 	// Constructor for the Textures class
 	public Textures() {
+
+	}
+	
+	public void initialize() {
 		// Initialize the title texture
 		title = new Texture("tetrisTitle.png");
 		
@@ -42,42 +49,29 @@ public class Textures {
 		scoreBox = new Texture("scoreBox.png");
 		
 		// Initialize the score
-		// Create a Integer aux arraylist and fill it with 0's
-		ArrayList<Integer> auxScore = new ArrayList<Integer>();
-		for (int i = 0; i < 5; i++) {
-			auxScore.add(0);
-		}
-		// Convert the aux arraylist to a texture
-		scoreTexture = m.getNewScore(auxScore);
+		scoreInts = "000000";
+		// Convert the score String to a texture
+		scoreTexture = m.getScoreTextures(scoreInts);
 		
 		// Initialize the level box texture
 		levelBox = new Texture("levelBox.png");
 		
 		// Initialize the level
-		// Create a Integer aux arraylist and fill it with 1's
-		ArrayList<Integer> auxLevel = new ArrayList<Integer>();
-		for (int i = 0; i < 2; i++) {
-			auxLevel.add(0);
-		}
-		auxLevel.add(1);
+		levelInts = "001";
 		// Convert the aux arraylist to a texture
-		levelTexture = m.getNewLevel(auxLevel);
+		levelTexture = m.getLevelTextures(levelInts);
 		
 		// Initialize the lines box texture
 		linesBox = new Texture("linesBox.png");
 		
 		// Initialize the lines
-		// Create a Integer aux arraylist and fill it with 1's
-		ArrayList<Integer> auxLines = new ArrayList<Integer>();
-		for (int i = 0; i < 3; i++) {
-			auxLines.add(0);
-		}
-		auxLines.add(1);
+		linesInts = "0001";
 		// Convert the aux arraylist to a texture
-		linesTexture = m.getNewLines(auxLines);
+		linesTexture = m.getLinesTextures(linesInts);
 		
 		// Initialize the background texture
 		background = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("background.gif").read());
+		
 	}
 
 	
@@ -101,9 +95,11 @@ public class Textures {
 	}
 	
 	// Setter for the score texture
-	public void setScore(ArrayList<Integer> scoreInts) {
+	public void setScore(String scoreInts) {
+		// Set the scoreInts to the new scoreInt
+		this.scoreInts = scoreInts;
 		// Get the new score as a Integer arraylist and convert it to a texture
-		scoreTexture = m.getNewScore(scoreInts);
+		scoreTexture = m.getScoreTextures(scoreInts);
 	}
 	
 	// Getter for the scoreTexture
@@ -111,15 +107,22 @@ public class Textures {
 		return scoreTexture;
 	}
 	
+	// Getter for the scoreInts
+	public String getScoreInts() {
+        return scoreInts;
+    }
+	
 	// Getter for the levelBox texture
 	public Texture getLevelBox() {
 		return levelBox;
 	}
 	
 	// Setter for the level texture
-	public void setLevel(ArrayList<Integer> levelInts) {
+	public void setLevel(String levelInts) {
+		// Set the levelInts to the new levelInt
+		this.levelInts = levelInts;
 		// Get the new score as a Integer arraylist and convert it to a texture
-		scoreTexture = m.getNewLevel(levelInts);
+		scoreTexture = m.getLevelTextures(levelInts);
 	}
 	
 	// Getter for the levelTexture
@@ -127,20 +130,32 @@ public class Textures {
 		return levelTexture;
 	}
 	
+	// Getter for the levelInts
+	public String getLevelInts() {
+        return levelInts;
+    }
+	
 	// Getter for the linesBox texture
 	public Texture getLinesBox() {
 		return linesBox;
 	}
 	
 	// Setter for the lines texture
-	public void setLines(ArrayList<Integer> linesInts) {
+	public void setLines(String linesInts) {
+		// Set the linesInts to the new linesInt
+		this.linesInts = linesInts;
 		// Get the new score as a Integer arraylist and convert it to a texture
-		scoreTexture = m.getNewLines(linesInts);
+		scoreTexture = m.getLinesTextures(linesInts);
 	}
 	
 	// Getter for the linesTexture
 	public ArrayList<Texture> getLines() {
 		return linesTexture;
+	}
+	
+	// Getter for the linesInts
+	public String getLinesInts() {
+		return linesInts;
 	}
 	
 	
