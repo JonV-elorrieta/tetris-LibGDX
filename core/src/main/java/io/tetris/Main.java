@@ -46,11 +46,11 @@ public class Main extends ApplicationAdapter {
         final int width = Gdx.graphics.getWidth();
         final int height = Gdx.graphics.getHeight();
         
-        batch.draw(animation.getKeyFrame(elapsed), 20.0f, 20.0f);
-        // batch.draw(background, 0, 0, width, height);
+        batch.draw(animation.getKeyFrame(elapsed), 0, 0, width, height);
         batch.draw(table, 40, 75, width - 240, height - 250);
         batch.draw(title, 40, height - 160, width - 240, 150);
         batch.draw(score, width - 180, height - 320, 150, 150);
+        
         batch.end();
         
     }
