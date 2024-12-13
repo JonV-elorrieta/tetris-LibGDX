@@ -73,8 +73,6 @@ public class Methods {
 	
 	public void sumScore(int sumScore, Textures textures) {
 		// Get the old score as a int
-	
-		
 		int newScore = Integer.parseInt(textures.getScoreInts());
 		// Sum the new score to the old score
 		newScore += sumScore;
@@ -98,7 +96,6 @@ public class Methods {
 		// Set the new score
 		textures.setScore(newScoreString);
 		
-		System.out.println("Score: " + newScoreString);
 		
 	}
 	

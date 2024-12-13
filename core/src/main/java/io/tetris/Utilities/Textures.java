@@ -10,6 +10,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Textures {
 	// Methods object for utilities
 	Methods m = new Methods();
+	
+	// Textures_pieces object for the pieces
+	Textures_pieces tp = new Textures_pieces();
 
 	// Texture for the title of the game
 	private Texture title;
@@ -30,8 +33,14 @@ public class Textures {
     // Texture for the lines of the game
     private String linesInts;
     private ArrayList<Texture> linesTexture = new ArrayList<Texture>();
+    // Texture for the piece box of the game
+    private Texture pieceBox;
+    // Texture for the next piece of the game
+    private Texture nextPiece;
 	// Texture for the background of the game
 	private Animation<TextureRegion> background;
+	
+	
 	
 	// Constructor for the Textures class
 	public Textures() {
@@ -68,6 +77,15 @@ public class Textures {
 		linesInts = "0001";
 		// Convert the aux arraylist to a texture
 		linesTexture = m.getLinesTextures(linesInts);
+		
+		// Initialize the piece box texture
+		pieceBox = new Texture("pieceBox.png");
+		
+		// Initialize the pieces
+		tp.initialize();
+		
+		// Initialize the next piece
+		nextPiece = tp.getRandomPiece();
 		
 		// Initialize the background texture
 		background = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("background.gif").read());
@@ -156,6 +174,38 @@ public class Textures {
 	// Getter for the linesInts
 	public String getLinesInts() {
 		return linesInts;
+	}
+	
+	// Getter for the pieceBox texture
+	public Texture getPieceBox() {
+		return pieceBox;
+	}
+	
+	// Getter for the nextPiece texture
+	public Texture getNextPiece() {
+		return nextPiece;
+	}
+	
+	// Setter for the nextPiece texture
+	public void setNextPiece() {
+        // Set the nextPiece to a random piece
+        nextPiece = tp.getRandomPiece();
+	}
+	
+	// Dispose method for the textures
+	public void dispose() {
+		title.dispose();
+		table.dispose();
+		scoreBox.dispose();
+		levelBox.dispose();
+		linesBox.dispose();
+		pieceBox.dispose();
+		
+		tp.dispose();
+
+		for (Object frame : background.getKeyFrames()) {
+			((TextureRegion) frame).getTexture().dispose();
+		}
 	}
 	
 	

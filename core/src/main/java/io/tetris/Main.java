@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.tetris.Utilities.GifDecoder;
 import io.tetris.Utilities.Methods;
@@ -26,14 +27,19 @@ public class Main extends ApplicationAdapter {
     // Textures object for getting textures
     private Textures textures;
     
+    // Methods object for utilities
     private Methods m = new Methods();
     
     // Elapsed
     private float elapsed;
     
-
-    private float inputDelay = 0.5f; // Delay in seconds
+    // Input delay
+    private float inputDelay = 0.5f; 
 	private float inputTimer = 0;
+	
+	private static final int GRID_WIDTH = 10;
+	private static final int GRID_HEIGHT = 25;
+	private Texture[][] grid;
   
     
     @Override
@@ -43,8 +49,17 @@ public class Main extends ApplicationAdapter {
         // Create a new Textures object
         textures = new Textures();
         textures.initialize();
-
         
+        // Initialize the grid
+        grid = new Texture[GRID_WIDTH][GRID_HEIGHT];
+        
+        // We get the next piece and place it on the grid
+        Texture pieceTexture = textures.getNextPiece();
+        placePiece(4, 24, pieceTexture);
+        
+        // Set the next piece to the textures
+        textures.setNextPiece();
+
     }
     
     @Override
@@ -142,6 +157,24 @@ public class Main extends ApplicationAdapter {
 	        batch.draw(lines.get(i), width - 180 + numberWidth * i, height - 550 - numberWidth, numberWidth, numberWidth);
 	    }
 	    
+	    // Draw the piece box
+	    batch.draw(textures.getPieceBox(), width - 200, height - 775, 200, BoxWidth);
+	    
+	    numberWidth = BoxWidth/2;
+	    // Draw the piece
+	    batch.draw(textures.getNextPiece(), width - 150, height - 750, numberWidth, numberWidth);
+	    
+	    // Draw the grid and pieces
+	    float cellWidth = (width - 240) / GRID_WIDTH;
+	    float cellHeight = (height - 250) / GRID_HEIGHT;
+	    for (int x = 0; x < GRID_WIDTH; x++) {
+	        for (int y = 0; y < GRID_HEIGHT; y++) {
+	            if (grid[x][y] != null) {
+	                batch.draw(grid[x][y], 40 + x * cellWidth, 75 + y * cellHeight, cellWidth, cellHeight);
+	            }
+	        }
+	    }
+	    
 	    // End the batch
 	    batch.end();
 	}
@@ -150,15 +183,13 @@ public class Main extends ApplicationAdapter {
     public void dispose() {
     	// Dispose the batch and all the textures
         batch.dispose();
-        textures.getTitle().dispose();
-        textures.getTable().dispose();
-        textures.getScoreBox().dispose();
-        textures.getLevelBox().dispose();
-        textures.getLinesBox().dispose();
+        textures.dispose();
         
-        
-        for (Object frame : textures.getBackground().getKeyFrames()) {
-            ((TextureRegion) frame).getTexture().dispose();
+    }
+    
+    private void placePiece(int x, int y, Texture pieceTexture) {
+        if (x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT) {
+            grid[x][y] = pieceTexture;
         }
     }
 }
