@@ -7,17 +7,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-
-import io.tetris.Utilities.GifDecoder;
 import io.tetris.Utilities.Methods;
 import io.tetris.Utilities.Textures;
+import io.tetris.pieces.Piece;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
@@ -53,12 +46,20 @@ public class Main extends ApplicationAdapter {
         // Initialize the grid
         grid = new Texture[GRID_WIDTH][GRID_HEIGHT];
         
-        // We get the next piece and place it on the grid
-        Texture pieceTexture = textures.getNextPiece();
-        placePiece(4, 24, pieceTexture);
         
-        // Set the next piece to the textures
-        textures.setNextPiece();
+        // Texture pieceTexture = textures.getNextPiece();
+        // placePiece(4, 24, pieceTexture);
+        
+        
+        // We get the piece 
+        Piece piece = textures.getPiece();
+        // Get the position of the piece
+        int[][] position = piece.getPosition();
+        // Place it on the grid
+		for (int i = 0; i < position.length; i++) {
+			placePiece(position[i][0], position[i][1], piece);
+		}
+       
 
     }
     
@@ -84,10 +85,8 @@ public class Main extends ApplicationAdapter {
     	
         if (inputTimer >= inputDelay) {
             if (Gdx.input.isKeyPressed(Keys.ENTER)) {
-                inputTimer = 0; // Reset the timer
-                int randomNumber = (int) (Math.random() * 99) + 1;
-                System.out.println("Random number: " + randomNumber);
-                m.sumScore(randomNumber,textures);
+            	textures.setPiece();
+                textures.setNextPiece();
             }
         }
     	

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Texture;
 
 import io.tetris.Main;
+import io.tetris.pieces.*;
 
 public class Methods {
 
@@ -95,8 +96,69 @@ public class Methods {
 		
 		// Set the new score
 		textures.setScore(newScoreString);
-		
-		
+	}
+	
+	public Piece getRandomPiece() {
+		// Get a random piece
+		int random = (int) (Math.random() * 7);
+		// Instantiate a return piece
+		Piece randomPiece = null;
+		// Return the random piece
+		switch (random) {
+		case 0:
+			randomPiece = new Piece_I();
+			break;
+		case 1:
+			randomPiece = new Piece_J();
+			break;
+		case 2:
+			randomPiece = new Piece_L();
+			break;
+		case 3:
+			randomPiece = new Piece_O();
+			break;
+		case 4:
+			randomPiece = new Piece_S();
+			break;
+		case 5:
+			randomPiece	= new Piece_T();
+			break;
+		case 6:
+			randomPiece = new Piece_Z();
+			break;
+		}
+		return randomPiece;
+	}
+	
+	public Piece getNextPiece(Texture texture) {
+		// Instantiate a return piece
+		Piece randomPiece = null;
+		// Check which piece we have to return
+		switch (texture.toString()) {
+			case "pieces/piece_I.png":
+				randomPiece = new Piece_I();
+				break;
+			case "pieces/piece_J.png":
+				randomPiece = new Piece_J();
+				break;
+			case "pieces/piece_L.png":
+				randomPiece = new Piece_L();
+				break;
+			case "pieces/piece_O.png":
+				randomPiece = new Piece_O();
+				break;
+			case "pieces/piece_S.png":
+				randomPiece = new Piece_S();
+				break;
+			case "pieces/piece_T.png":
+				randomPiece = new Piece_T();
+				break;
+			case "pieces/piece_Z.png":
+				randomPiece = new Piece_Z();
+				break;
+		}
+		// Return the piece
+		return randomPiece;
 	}
 	
 

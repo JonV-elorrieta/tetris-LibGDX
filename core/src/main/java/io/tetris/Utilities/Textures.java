@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import io.tetris.pieces.*;
+
+
 public class Textures {
 	// Methods object for utilities
 	Methods m = new Methods();
@@ -37,6 +40,8 @@ public class Textures {
     private Texture pieceBox;
     // Texture for the next piece of the game
     private Texture nextPiece;
+    // Texture for the piece of the game (the current piece)
+    private Piece piece;
 	// Texture for the background of the game
 	private Animation<TextureRegion> background;
 	
@@ -86,6 +91,9 @@ public class Textures {
 		
 		// Initialize the next piece
 		nextPiece = tp.getRandomPiece();
+		
+		// Initialize the current piece
+		piece = m.getRandomPiece();
 		
 		// Initialize the background texture
 		background = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("background.gif").read());
@@ -192,6 +200,17 @@ public class Textures {
         nextPiece = tp.getRandomPiece();
 	}
 	
+	// Getter for the actual piece (the current piece)
+	public Piece getPiece() {
+		return piece;
+	}
+	
+	// Setter for the actual piece (the current piece)
+	public void setPiece() {
+		// Set the piece to the next piece
+		piece = m.getNextPiece(nextPiece);
+	}
+	
 	// Dispose method for the textures
 	public void dispose() {
 		title.dispose();
@@ -207,6 +226,8 @@ public class Textures {
 			((TextureRegion) frame).getTexture().dispose();
 		}
 	}
+	
+
 	
 	
 
