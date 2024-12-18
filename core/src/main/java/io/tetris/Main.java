@@ -30,6 +30,7 @@ public class Main extends ApplicationAdapter {
     private float inputDelay = 0.5f; 
 	private float inputTimer = 0;
 	
+	// Grid width and height
 	private static final int GRID_WIDTH = 10;
 	private static final int GRID_HEIGHT = 25;
 	private Texture[][] grid;
@@ -45,11 +46,6 @@ public class Main extends ApplicationAdapter {
         
         // Initialize the grid
         grid = new Texture[GRID_WIDTH][GRID_HEIGHT];
-        
-        
-        // Texture pieceTexture = textures.getNextPiece();
-        // placePiece(4, 24, pieceTexture);
-        
         
         // We get the piece 
         Piece piece = textures.getPiece();
@@ -87,6 +83,14 @@ public class Main extends ApplicationAdapter {
             if (Gdx.input.isKeyPressed(Keys.ENTER)) {
             	textures.setPiece();
                 textures.setNextPiece();
+                // We get the piece 
+                Piece piece = textures.getPiece();
+                // Get the position of the piece
+                int[][] position = piece.getPosition();
+                // Place it on the grid
+        		for (int i = 0; i < position.length; i++) {
+        			placePiece(position[i][0], position[i][1], piece);
+        		}
             }
         }
     	
