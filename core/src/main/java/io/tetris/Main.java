@@ -8,6 +8,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import io.tetris.Utilities.Constants;
 import io.tetris.Utilities.Methods;
 import io.tetris.Utilities.Textures;
 import io.tetris.pieces.Piece;
@@ -20,6 +22,9 @@ public class Main extends ApplicationAdapter {
     // Textures object for getting textures
     private Textures textures;
     
+    // The current piece
+    private Piece piece;
+    
     // Methods object for utilities
     private Methods m = new Methods();
     
@@ -27,13 +32,13 @@ public class Main extends ApplicationAdapter {
     private float elapsed;
     
     // Input delay
-    private float inputDelay = 0.5f; 
+    private float inputDelay = Constants.DELAY_F; 
 	private float inputTimer = 0;
 	
 	// Grid width and height
 	private static final int GRID_WIDTH = 10;
 	private static final int GRID_HEIGHT = 25;
-	private Texture[][] grid;
+	private static Texture[][] grid;
   
     
     @Override
@@ -48,7 +53,7 @@ public class Main extends ApplicationAdapter {
         grid = new Texture[GRID_WIDTH][GRID_HEIGHT];
         
         // We get the piece 
-        Piece piece = textures.getPiece();
+        piece = textures.getPiece();
         // Get the position of the piece
         int[][] position = piece.getPosition();
         // Place it on the grid
@@ -80,24 +85,50 @@ public class Main extends ApplicationAdapter {
         inputTimer += delta;
     	
         if (inputTimer >= inputDelay) {
-            if (Gdx.input.isKeyPressed(Keys.ENTER)) {
-            	textures.setPiece();
-                textures.setNextPiece();
-                // We get the piece 
-                Piece piece = textures.getPiece();
-                // Get the position of the piece
-                int[][] position = piece.getPosition();
-                // Place it on the grid
-        		for (int i = 0; i < position.length; i++) {
-        			placePiece(position[i][0], position[i][1], piece);
-        		}
-            }
-        }
-    	
+			if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+				// Move the piece to the left
+				int[][] oldPosition = piece.getPosition();
+				
+				for (int i = 0; i < oldPosition.length; i++) {
+					removePiece(oldPosition[i][0], oldPosition[i][1]);
+				}
+				
+				textures.movePieceLeft();
+				int[][] newPosition = textures.getPiece().getPosition();
+				
+				for (int i = 0; i < newPosition.length; i++) {
+					placePiece(newPosition[i][0], newPosition[i][1], textures.getPiece());
+				}
+				
+			}
+			
+			if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+				// Move the piece to the right
+				int[][] oldPosition = piece.getPosition();
+
+				for (int i = 0; i < oldPosition.length; i++) {
+					removePiece(oldPosition[i][0], oldPosition[i][1]);
+				}
+
+				textures.movePieceRight();
+				int[][] newPosition = textures.getPiece().getPosition();
+
+				for (int i = 0; i < newPosition.length; i++) {
+					placePiece(newPosition[i][0], newPosition[i][1], textures.getPiece());
+				}
+				
+			}
+			inputTimer = 0;
+		}
+        
+        
+        
     }
+    	
+    
     
 	private void logic() {
-		
+
 	}
 	
 	private void draw() {
@@ -190,9 +221,15 @@ public class Main extends ApplicationAdapter {
         
     }
     
-    private void placePiece(int x, int y, Texture pieceTexture) {
+    public static void placePiece(int x, int y, Texture pieceTexture) {
         if (x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT) {
             grid[x][y] = pieceTexture;
         }
     }
+    
+	public static void removePiece(int x, int y) {
+		if (x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT) {
+			grid[x][y] = null;
+		}
+	}
 }

@@ -42,6 +42,8 @@ public class Textures {
     private Texture nextPiece;
     // Texture for the piece of the game (the current piece)
     private Piece piece;
+    // Thread for the piece
+    private PieceThread pieceThread;
 	// Texture for the background of the game
 	private Animation<TextureRegion> background;
 	
@@ -94,6 +96,9 @@ public class Textures {
 		
 		// Initialize the current piece
 		piece = m.getRandomPiece();
+		
+		// Initialize the piece thread for the piece
+		pieceThread = new PieceThread(piece, this);
 		
 		// Initialize the background texture
 		background = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("background.gif").read());
@@ -209,6 +214,7 @@ public class Textures {
 	public void setPiece() {
 		// Set the piece to the next piece
 		piece = m.getNextPiece(nextPiece);
+		pieceThread = new PieceThread(piece, this);
 	}
 	
 	// Dispose method for the textures
@@ -225,6 +231,14 @@ public class Textures {
 		for (Object frame : background.getKeyFrames()) {
 			((TextureRegion) frame).getTexture().dispose();
 		}
+	}
+	
+	public void movePieceLeft() {
+		piece.moveLeft();
+	}
+	
+	public void movePieceRight() {
+		piece.moveRight();
 	}
 	
 
